@@ -1,0 +1,475 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AetherBrackets™ — Motion Signature</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ab-bg: #07080c;
+    --ab-bg-2: #0b0d14;
+    --ab-cyan: #2DD4F0;
+    --ab-cyan-soft: #7EE8F7;
+    --ab-blue: #3B82F6;
+    --ab-violet: #7C3AED;
+    --ab-text-dim: rgba(203, 213, 225, 0.55);
+    --ab-text-mid: rgba(203, 213, 225, 0.75);
+    --ab-duration: 2s;
+    --ab-stagger: 0.13s;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(45,212,240,0.06), transparent 60%),
+      radial-gradient(900px 500px at 50% 110%, rgba(124,58,237,0.05), transparent 60%),
+      var(--ab-bg);
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .page-header{
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .page-header .eyebrow{
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ab-text-dim);
+    margin-bottom: 14px;
+  }
+  .page-header h1{
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ab-text-mid);
+    margin: 0;
+  }
+
+  .showcase{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 900px){
+    .showcase{
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+  }
+
+  .card{
+    position: relative;
+    border-radius: 18px;
+    padding: 40px 28px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005)),
+      rgba(14, 16, 22, 0.7);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+  .card::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(45,212,240,0.18), rgba(124,58,237,0.04) 60%, transparent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .card .meta{
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ab-text-dim);
+  }
+  .card .meta.right{
+    left: auto;
+    right: 20px;
+    color: rgba(45,212,240,0.6);
+  }
+
+  /* ============ AetherBrackets Loader ============ */
+  .ab-loader{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 8px 4px;
+  }
+
+  .ab-wordmark{
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    line-height: 1;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    will-change: transform;
+  }
+
+  .ab-letter{
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(
+      180deg,
+      #B8F2FC 0%,
+      #7EE8F7 18%,
+      #2DD4F0 45%,
+      #3B82F6 78%,
+      #6D28D9 100%
+    );
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    transform: translateY(0);
+    animation: abWave var(--ab-duration) cubic-bezier(0.45, 0, 0.25, 1) infinite;
+    animation-delay: calc(var(--i) * var(--ab-stagger));
+    filter:
+      drop-shadow(0 0 0px rgba(45,212,240,0))
+      brightness(1);
+  }
+
+  /* Weight & style per letter to match wordmark */
+  .ab-letter.bold      { font-weight: 800; }
+  .ab-letter.bold-ital { font-weight: 700; font-style: italic; }
+  .ab-letter.tm{
+    font-size: 0.38em;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-left: 0.04em;
+    vertical-align: super;
+    transform-origin: center bottom;
+  }
+
+  @keyframes abWave{
+    0%   { transform: translateY(0);       filter: drop-shadow(0 0 0px rgba(45,212,240,0))   brightness(1); }
+    18%  { transform: translateY(calc(var(--amp, -6px) * 0.75)); filter: drop-shadow(0 0 4px rgba(45,212,240,0.35)) brightness(1.15); }
+    30%  { transform: translateY(var(--amp, -6px)); filter: drop-shadow(0 0 10px rgba(126,232,247,0.75)) brightness(1.35); }
+    46%  { transform: translateY(calc(var(--amp, -6px) * 0.5)); filter: drop-shadow(0 0 5px rgba(45,212,240,0.35)) brightness(1.15); }
+    62%  { transform: translateY(0);       filter: drop-shadow(0 0 0px rgba(45,212,240,0))   brightness(1); }
+    100% { transform: translateY(0);       filter: drop-shadow(0 0 0px rgba(45,212,240,0))   brightness(1); }
+  }
+
+  /* Label */
+  .ab-label{
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ab-text-dim);
+    animation: abPulse 2.4s ease-in-out infinite;
+    white-space: nowrap;
+  }
+  @keyframes abPulse{
+    0%,100% { opacity: 0.45; }
+    50%     { opacity: 0.85; }
+  }
+
+  /* ============ Size variants ============ */
+  .ab-loader[data-size="24"]{ --fs: 18px; --amp: -2.5px; --gap: 8px; --label-fs: 8px; }
+  .ab-loader[data-size="32"]{ --fs: 24px; --amp: -3.5px; --gap: 10px; --label-fs: 9px; }
+  .ab-loader[data-size="48"]{ --fs: 34px; --amp: -5px;   --gap: 12px; --label-fs: 10px; }
+  .ab-loader[data-size="64"]{ --fs: 46px; --amp: -6.5px; --gap: 14px; --label-fs: 11px; }
+  .ab-loader[data-size="96"]{ --fs: 68px; --amp: -9px;   --gap: 18px; --label-fs: 12px; }
+
+  .ab-loader .ab-wordmark{ font-size: var(--fs); }
+  .ab-loader .ab-label{ font-size: var(--label-fs); margin-top: var(--gap); }
+
+  /* Simplify glow at smaller sizes */
+  .ab-loader[data-size="24"] .ab-letter,
+  .ab-loader[data-size="32"] .ab-letter{
+    animation-name: abWaveSoft;
+  }
+  @keyframes abWaveSoft{
+    0%   { transform: translateY(0);       filter: brightness(1); }
+    30%  { transform: translateY(var(--amp, -3px)); filter: brightness(1.18); }
+    62%  { transform: translateY(0);       filter: brightness(1); }
+    100% { transform: translateY(0);       filter: brightness(1); }
+  }
+
+  /* ============ Hero / Featured ============ */
+  .hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+  }
+
+  /* ============ Sizes strip ============ */
+  .sizes-strip{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 720px){
+    .sizes-strip{
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .size-cell{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    border-radius: 14px;
+    background:
+      radial-gradient(400px 200px at 50% 0%, rgba(45,212,240,0.05), transparent 70%),
+      rgba(10, 12, 18, 0.6);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 20px 10px;
+  }
+  .size-cell .tag{
+    margin-top: 14px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ab-text-dim);
+  }
+
+  /* ============ Contextual states demo ============ */
+  .states{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 22px;
+  }
+  @media (min-width: 700px){
+    .states{ grid-template-columns: repeat(5, 1fr); }
+  }
+  .state-btn{
+    appearance: none;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    color: var(--ab-text-mid);
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 10px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .state-btn:hover{
+    border-color: rgba(45,212,240,0.35);
+    color: #B8F2FC;
+    background: rgba(45,212,240,0.05);
+  }
+  .state-btn.active{
+    border-color: rgba(45,212,240,0.55);
+    color: #E0FBFF;
+    background: rgba(45,212,240,0.08);
+    box-shadow: 0 0 0 1px rgba(45,212,240,0.15), 0 6px 24px -12px rgba(45,212,240,0.4);
+  }
+
+  /* ============ Modal overlay demo ============ */
+  .overlay-demo{
+    position: relative;
+    border-radius: 14px;
+    padding: 40px 24px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)),
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 14px),
+      rgba(8, 10, 16, 0.8);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+  }
+  .overlay-demo::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(500px 200px at 50% 50%, rgba(45,212,240,0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .footer-note{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ab-text-dim);
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="page-header">
+      <div class="eyebrow">Motion System · Signature Loader</div>
+      <h1>AetherBrackets™ — Processing Identity</h1>
+    </header>
+
+    <!-- HERO -->
+    <section class="card" style="padding: 60px 28px;">
+      <span class="meta">01 · Hero</span>
+      <span class="meta right">96px</span>
+      <div class="hero">
+        <div class="ab-loader" data-size="96" data-state="Loading…">
+          <div class="ab-wordmark" aria-label="AetherBrackets">
+            <!-- A e t h e r B r a c k e t s ™ -->
+            <span class="ab-letter bold"      style="--i:0">A</span>
+            <span class="ab-letter bold"      style="--i:1">e</span>
+            <span class="ab-letter bold-ital" style="--i:2">t</span>
+            <span class="ab-letter bold"      style="--i:3">h</span>
+            <span class="ab-letter bold"      style="--i:4">e</span>
+            <span class="ab-letter bold"      style="--i:5">r</span>
+            <span class="ab-letter bold"      style="--i:6">B</span>
+            <span class="ab-letter bold"      style="--i:7">r</span>
+            <span class="ab-letter bold"      style="--i:8">a</span>
+            <span class="ab-letter bold"      style="--i:9">c</span>
+            <span class="ab-letter bold"      style="--i:10">k</span>
+            <span class="ab-letter bold"      style="--i:11">e</span>
+            <span class="ab-letter bold-ital" style="--i:12">t</span>
+            <span class="ab-letter bold-ital" style="--i:13">s</span>
+            <span class="ab-letter tm"        style="--i:14">™</span>
+          </div>
+          <div class="ab-label">Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIZES -->
+    <section class="card" style="margin-top: 24px;">
+      <span class="meta">02 · Responsive Sizes</span>
+      <span class="meta right">24 · 32 · 48 · 64 · 96</span>
+      <div style="height: 24px;"></div>
+      <div class="sizes-strip">
+
+        <div class="size-cell">
+          <div class="ab-loader" data-size="24">
+            <div class="ab-wordmark">
+              <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+            </div>
+            <div class="ab-label">Loading…</div>
+          </div>
+          <div class="tag">24px</div>
+        </div>
+
+        <div class="size-cell">
+          <div class="ab-loader" data-size="32">
+            <div class="ab-wordmark">
+              <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+            </div>
+            <div class="ab-label">Loading…</div>
+          </div>
+          <div class="tag">32px</div>
+        </div>
+
+        <div class="size-cell">
+          <div class="ab-loader" data-size="48">
+            <div class="ab-wordmark">
+              <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+            </div>
+            <div class="ab-label">Loading…</div>
+          </div>
+          <div class="tag">48px</div>
+        </div>
+
+        <div class="size-cell">
+          <div class="ab-loader" data-size="64">
+            <div class="ab-wordmark">
+              <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+            </div>
+            <div class="ab-label">Loading…</div>
+          </div>
+          <div class="tag">64px</div>
+        </div>
+
+        <div class="size-cell">
+          <div class="ab-loader" data-size="96">
+            <div class="ab-wordmark">
+              <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+            </div>
+            <div class="ab-label">Loading…</div>
+          </div>
+          <div class="tag">96px</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTEXTUAL STATES -->
+    <section class="card" style="margin-top: 24px;">
+      <span class="meta">03 · Contextual States</span>
+      <span class="meta right">Interactive</span>
+      <div style="height: 24px;"></div>
+
+      <div class="overlay-demo">
+        <div class="ab-loader" data-size="64" id="stateLoader">
+          <div class="ab-wordmark">
+            <span class="ab-letter bold"      style="--i:0">A</span><span class="ab-letter bold"      style="--i:1">e</span><span class="ab-letter bold-ital" style="--i:2">t</span><span class="ab-letter bold"      style="--i:3">h</span><span class="ab-letter bold"      style="--i:4">e</span><span class="ab-letter bold"      style="--i:5">r</span><span class="ab-letter bold"      style="--i:6">B</span><span class="ab-letter bold"      style="--i:7">r</span><span class="ab-letter bold"      style="--i:8">a</span><span class="ab-letter bold"      style="--i:9">c</span><span class="ab-letter bold"      style="--i:10">k</span><span class="ab-letter bold"      style="--i:11">e</span><span class="ab-letter bold-ital" style="--i:12">t</span><span class="ab-letter bold-ital" style="--i:13">s</span><span class="ab-letter tm"        style="--i:14">™</span>
+          </div>
+          <div class="ab-label" id="stateLabel">Loading…</div>
+        </div>
+      </div>
+
+      <div class="states" id="stateButtons">
+        <button class="state-btn active" data-state="Loading…">Loading…</button>
+        <button class="state-btn" data-state="Processing…">Processing…</button>
+        <button class="state-btn" data-state="Generating bracket…">Generating bracket…</button>
+        <button class="state-btn" data-state="Syncing…">Syncing…</button>
+        <button class="state-btn" data-state="Activating…">Activating…</button>
+      </div>
+    </section>
+
+    <div class="footer-note">Quietly · Precisely · Continuously</div>
+  </div>
+
+<script>
+  // Contextual state switcher
+  (function(){
+    const buttons = document.querySelectorAll('#stateButtons .state-btn');
+    const label = document.getElementById('stateLabel');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const next = btn.getAttribute('data-state');
+        // Gentle crossfade
+        label.style.transition = 'opacity 0.25s ease';
+        label.style.opacity = '0';
+        setTimeout(() => {
+          label.textContent = next;
+          label.style.opacity = '';
+        }, 220);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
